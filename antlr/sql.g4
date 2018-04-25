@@ -1,8 +1,9 @@
 
 /*
- * PD
+ * Pablo Arriola
+ * Andres Oliva
  * UVG
- * 2016
+ * 2018
  */
 
 grammar sql;
