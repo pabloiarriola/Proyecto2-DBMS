@@ -48,24 +48,24 @@ public class Visitor<T> extends sqlBaseVisitor {
         boolean carpeta = manejador.createDirectory(nombreBaseDatos);
         boolean master = manejador.checkFile("", "MasterDB");
         if (carpeta){
-            DBMS.debug("Agregando "+ nombreBaseDatos + " al archivo maestro", ctx.getStart());
+            DBMS.debug("AGREGADO"+ nombreBaseDatos + " AL ARCHIVO MAESTRO", ctx.getStart());
             mdb.agregarDB(nombreBaseDatos);
         }
         if (carpeta && master){
-            DBMS.debug("Actualizando archivo maestro de bases de datos", ctx.getStart());
+            DBMS.debug(" SE HA ACTUALIZADO EL ARCHIVO MAESTRO DE LA BASE DE DATOS", ctx.getStart());
             ArchivoMaestroDB masterSaved = (ArchivoMaestroDB) json.JSONtoObject("", "MasterDB", "ArchivoMaestroDB");
             mdb.agregarExistente(masterSaved);
          
         
         }
         if (carpeta){
-            DBMS.throwMessage("Se ha creado la base de datos", ctx.getStart());
+            DBMS.throwMessage("SE HA CREADO LA BASE DE DATOS CON EXITO", ctx.getStart());
             
             json.objectToJSON("", "MasterDB", mdb);//convierte el objeto a JSON
             mdb = new ArchivoMaestroDB(); //sirve para perder la referencia
         }
         else{
-            DBMS.throwMessage("Error: la base de datos ya existe", ctx.getStart());
+            DBMS.throwMessage("ERROR: LA BASE DE DATOS YA EXISTE", ctx.getStart());
         }
         
         
@@ -93,17 +93,17 @@ public class Visitor<T> extends sqlBaseVisitor {
         ArchivoMaestroDB masterSaved = (ArchivoMaestroDB) json.JSONtoObject("", "MasterDB", "ArchivoMaestroDB");
        
         if (manejador.checkFileTabla(bdActual, nombreTabla)){
-            DBMS.debug("Nombre tabla " + nombreTabla + " existe", ctx.getStart());
+            DBMS.debug("ERROR, EL NOMBRE DE LA TABLA " + nombreTabla + "YA EXISTE", ctx.getStart());
             mdt.agregarTabla(nombreTabla);
             if (tabla != null){
-                DBMS.throwMessage("Se ha guardado la tabla " + nombreTabla, ctx.getStart());
+                DBMS.throwMessage("SE HA GUARDADO LA TABLA " + nombreTabla + "EXITOSAMENTE", ctx.getStart());
                 json.objectToJSON(bdActual, nombreTabla, tabla);
             }
             else{
-                DBMS.throwMessage("Error: Ha ocurrido un error al crear la tabla", ctx.getStart());
+                DBMS.throwMessage("ERROR: NO SE HA PODIDO CREAR LA TABLA", ctx.getStart());
             }    
             if (manejador.checkFile(bdActual, "MasterTable"+bdActual)){
-                DBMS.debug("Actualizando archivo maestro de tablas", ctx.getStart());
+                DBMS.debug("ACTUALIZANDO ARCHIVO MAESTRO DE TABLAS", ctx.getStart());
                 ArchivoMaestroTabla masterTable = (ArchivoMaestroTabla) json.JSONtoObject(bdActual, "MasterTable"+bdActual, "ArchivoMaestroTabla");
                 mdt.agregarExistente(masterTable);
             }
@@ -120,9 +120,9 @@ public class Visitor<T> extends sqlBaseVisitor {
         }
         else{
             if (bdActual.isEmpty())
-                DBMS.throwMessage("Error: No se ha seleccionado la base de datos", ctx.getStart());
+                DBMS.throwMessage("ERROR: NO SE HA SELECCIONADO LA BASE DE DATOS", ctx.getStart());
             else
-                DBMS.throwMessage("Error: La tabla ya existe", ctx.getStart());
+                DBMS.throwMessage("ERROR: LA TABLA YA EXISTE", ctx.getStart());
         }
        
         mdt = new ArchivoMaestroTabla(); //sirve para perder la referencia
@@ -134,10 +134,10 @@ public class Visitor<T> extends sqlBaseVisitor {
         if (tabla != null){
             String nombreColumna = ctx.getChild(0).getText();
             String tipo = (String)visit(ctx.getChild(1));
-            DBMS.debug("Verificando unicidad en nombre de columnas ", ctx.getStart());
+            DBMS.debug("VERIFICANDO INICIDAD EN NOMBRE DE COLUMNAS", ctx.getStart());
             for (TuplaColumna columna : tabla.getColumnas()) {
                 if (columna.getNombre().equals(nombreColumna)){
-                    DBMS.throwMessage("Error: La columna  " + nombreColumna +" ya está definida", ctx.getStart());
+                    DBMS.throwMessage("ERROR: LA COLUMNA " + nombreColumna +" YA HA SIDO DEFINIDA", ctx.getStart());
                     tabla = null;
                     return super.visitColumn(ctx);
                 }
@@ -156,7 +156,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             tabla.agregarColumna(tupla);
         }
         else{
-            DBMS.debug("Ha ocurrido un error en cascada en la tabla ", ctx.getStart());
+            DBMS.debug(" HA OCURRIDO UN ERROR EN CASCADA EN LA TABLA ", ctx.getStart());
         }
         return super.visitColumn(ctx);
     }
@@ -167,11 +167,11 @@ public class Visitor<T> extends sqlBaseVisitor {
         bdActual = ctx.getChild(2).getText();
        
         if (manejador.checkDB(bdActual)==false){
-            DBMS.throwMessage("Error: la base de datos "  + bdActual + " no existe " , ctx.getStart());
+            DBMS.throwMessage("ERROR: LA BASE DE DATOS "  + bdActual + " NO EXISTE " , ctx.getStart());
             bdActual = "";
            return super.visitUse_schema_statement(ctx); 
         }
-        DBMS.throwMessage("La base de datos " + bdActual + " ha sido seleccionada",ctx.getStart());
+        DBMS.throwMessage("LA BASE DE DATOS " + bdActual + " HA SIDO SELECCIONADA ",ctx.getStart());
         return super.visitUse_schema_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -191,7 +191,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                 if(tipoConstraint.equals("PRIMARY"))
                     for(int i = 0;i<tabla.getConstraints().size();i++){
                         if(tabla.getConstraints().get(i).getTipo().equals("PRIMARY")){
-                            DBMS.throwMessage("Error: Constraint primary key ya existe en la tabla " + nombreTabla, ctx.getStart() );
+                            DBMS.throwMessage("ERROR: CONSTRAINT PRIMARY KEY YA EXISTE EN LA TABLA " + nombreTabla, ctx.getStart() );
                             tabla  = null;
                             return null; //To change body of generated methods, choose Tools | Templates.
                         }
@@ -199,7 +199,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             ArrayList<TuplaColumna> camposActuales = tabla_c.getColumnas();
             for (int i =0;i<tabla.getConstraints().size();i++){
                  if (tabla.getConstraints().get(i).getNombre().equals(nombreConstraint)){
-                     DBMS.throwMessage("Error: el nombre del constraint " + nombreConstraint + " ya ha sido usado",ctx.getStart());
+                     DBMS.throwMessage("ERROR: EL NOMBRE DEL CONSTRAINT " + nombreConstraint + " YA HA SIDO UTILIZADO",ctx.getStart());
                      tabla = null;
                      return null;
                     }
@@ -208,10 +208,10 @@ public class Visitor<T> extends sqlBaseVisitor {
             if (verificador){
                 constraint.setReferences(listadoIDS);
                 tabla.addConstraint(constraint);
-                DBMS.debug("Se ha agregado el constraint" + nombreConstraint + "a la tabla " + nombreTabla, ctx.getStart());
+                DBMS.debug(" SE HA AGREGADO EL CONSTRAINT" + nombreConstraint + "A LA TABLA" + nombreTabla, ctx.getStart());
             }
             else{
-                 DBMS.throwMessage("Error: campo "+listadoIDS+" no existe en la tabla " + nombreTabla, ctx.getStart() );
+                 DBMS.throwMessage("ERROR: CAMPO "+listadoIDS+" NO EXISTE EN LA TABLA " + nombreTabla, ctx.getStart() );
                  tabla = null; //ya no se guarda la tabla.
             }
         }
@@ -240,7 +240,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                 }
                 if (!verCheck){
                     tabla = null;
-                    DBMS.throwMessage("Error: El nombre del constraint "+nombreConstraint + " ya existe " , ctx.getStart());
+                    DBMS.throwMessage("ERROR: EL NOMMBRE DEL CONSTRAINT "+nombreConstraint + " YA EXISTE " , ctx.getStart());
                     return null;
                 }
                 for (int i = 3;i<ctx.getChildCount();i++){
@@ -256,7 +256,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                 }
                 this.globalLogic = "";
                 tabla.addConstraint(constraint);
-                DBMS.debug("Se ha agregado el constraint " + nombreConstraint, ctx.getStart());
+                DBMS.debug(" SE HA AGREGADO EL CONSTRAINT " + nombreConstraint, ctx.getStart());
             }
         
         return null; //To change body of generated methods, choose Tools | Templates.
@@ -308,7 +308,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             boolean verificadorRef = this.revisarListadoIDs(columnasRef, listadoIDSREF);
             //si no existen los campos en la referencia
             if (!verificadorRef){//no pasa la validación
-                DBMS.throwMessage("No existe algún campo de " +listadoIDSREF, ctx.getStart());
+                DBMS.throwMessage("NO EXISTE ALGÚN CAMPO DE: " +listadoIDSREF, ctx.getStart());
                 tabla = null;
                 return null;
             }
@@ -322,7 +322,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                 if(tabla!=null){
                     for(int i = 0;i<tabla.getConstraints().size();i++)
                         if(tabla.getConstraints().get(i).getNombre().equals(nombreConstraint)){
-                            DBMS.throwMessage("Error: Constraint "+nombreConstraint+" ya existe en la tabla " + nombreTabla,ctx.getStart() );
+                            DBMS.throwMessage("ERROR: CONSTRAINT  "+nombreConstraint+" YA EXISTE EN LA TABLA " + nombreTabla,ctx.getStart() );
                             return super.visitConstraintForeignKey(ctx); //To change body of generated methods, choose Tools | Templates.
                         }
                 ArrayList<TuplaColumna> camposActuales = tabla_c.getColumnas();
@@ -330,10 +330,10 @@ public class Visitor<T> extends sqlBaseVisitor {
                 if (verificador){
                     constraint.setReferences(listadoIDS);
                     tabla.addConstraint(constraint);
-                    DBMS.debug("Se ha agregado el constraint " + nombreConstraint,ctx.getStart());
+                    DBMS.debug(" SE HA AGREGADO EL CONSTRAINT " + nombreConstraint,ctx.getStart());
                 }
                 else{
-                     DBMS.throwMessage("Error: campo "+listadoIDS+" no existe en la tabla " + nombreTabla,ctx.getStart() );
+                     DBMS.throwMessage("ERROR: CAMPO "+listadoIDS+" NO EXISTE EN LA TABLA " + nombreTabla,ctx.getStart() );
                      tabla = null; //ya no se guarda la tabla.
                 }
             }
@@ -365,7 +365,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             
         }
         if (checkDuplicates(listadoIDS)){
-            DBMS.throwMessage("Error: Hay elementos repetidos en constraint");
+            DBMS.throwMessage("ERROR: HAY ELEMENTOS REPETIDOS EN CONSTRAINT");
             return false;
         }
         return verificador;
@@ -422,14 +422,14 @@ public class Visitor<T> extends sqlBaseVisitor {
     @Override
     public Object visitDrop_schema_statement(sqlParser.Drop_schema_statementContext ctx) {
         String nombreDB = ctx.getChild(2).getText();
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro que desea eliminar la base de datos "+nombreDB+" ?");
+        int dialogResult = JOptionPane.showConfirmDialog (null, "¿ESTA SEGURO DE ELIMINAR LA BASE DE DATOS "+nombreDB+" ?");
         if(dialogResult == JOptionPane.NO_OPTION || dialogResult == JOptionPane.CANCEL_OPTION){
             return super.visitDrop_schema_statement(ctx);
         }
         
         boolean verificador = manejador.checkDB(nombreDB);
         if (!verificador){
-            DBMS.throwMessage("La base de datos " + nombreDB + " no existe",ctx.getStart());
+            DBMS.throwMessage("LA BASE DE DATOS " + nombreDB + " NO EXISTE ",ctx.getStart());
             return super.visitDrop_schema_statement(ctx);
         }
         manejador.eliminarDB(nombreDB);
@@ -442,7 +442,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             }
         }
         json.objectToJSON("", "MasterDB", mdbActual);
-        DBMS.throwMessage("Se ha eliminado la base de datos " + nombreDB, ctx.getStart());
+        DBMS.throwMessage("SE HA ELIMINADO LA BASE DE DATOS " + nombreDB, ctx.getStart());
         
         return super.visitDrop_schema_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -458,7 +458,7 @@ public class Visitor<T> extends sqlBaseVisitor {
         String nombreDBActual = ctx.getChild(2).getText();
         String nombreNuevoDB = ctx.getChild(5).getText();
         if (!manejador.checkDB(nombreDBActual)){
-            DBMS.throwMessage("Error: la base de datos " + nombreDBActual + " no existe" , ctx.getStart());
+            DBMS.throwMessage("ERROR: LA BASE DE DATOS " + nombreDBActual + " NO EXISTE " , ctx.getStart());
             return null;
         }
         manejador.renameFile(bdActual, nombreDBActual, nombreNuevoDB);
@@ -471,7 +471,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             }
         }
         json.objectToJSON("", "MasterDB", mdbActual);
-        DBMS.debug("Se ha cambiado el nombre de la base de datos "+ nombreDBActual + " a " + nombreNuevoDB, ctx.getStart());
+        DBMS.debug("SE HA ACTUALIZADO EL NOMBRE DE LA BASE DE DATOS "+ nombreDBActual + " A " + nombreNuevoDB, ctx.getStart());
         
         return super.visitAlter_database_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -482,13 +482,13 @@ public class Visitor<T> extends sqlBaseVisitor {
         String nombreNuevo = ctx.getChild(5).getText();
        
         //antes reviso que exista la tabla en la base de datos actual
-        DBMS.debug("Verificando si la tabla " + nombreActual + " existe");
+        DBMS.debug("VERIFICANDO SI LA TABLA " + nombreActual + " EXISTE ");
         boolean verificador = manejador.checkFile(bdActual, nombreActual);
         if (!verificador){
-            DBMS.throwMessage("Error: la tabla" + nombreActual + " no existe", ctx.getStart());
+            DBMS.throwMessage("ERROR: LA TABLA " + nombreActual + " NO EXISTE ", ctx.getStart());
             return super.visitRename_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
         }
-        DBMS.debug("La tabla " + nombreActual + "si existe", ctx.getStart());
+        DBMS.debug("LA TABLA  " + nombreActual + "SI EXISTE", ctx.getStart());
         //renombra el archivo
         manejador.renameFileJSON(bdActual, nombreActual, nombreNuevo);
         ArchivoMaestroTabla tablita = (ArchivoMaestroTabla)json.JSONtoObject(bdActual, "MasterTable"+bdActual, "ArchivoMaestroTabla");
@@ -500,7 +500,7 @@ public class Visitor<T> extends sqlBaseVisitor {
             }
         }
         json.objectToJSON(bdActual, "MasterTable"+bdActual, tablita);
-        DBMS.throwMessage("Se ha renombrado la tabla "+ nombreActual +" a "+ nombreNuevo, ctx.getStart());
+        DBMS.throwMessage("SE HA RENOMBRADO LA TABLA  "+ nombreActual +" A "+ nombreNuevo, ctx.getStart());
         return super.visitRename_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -532,28 +532,26 @@ public class Visitor<T> extends sqlBaseVisitor {
                         
                 }
             }else{
-                DBMS.throwMessage( "Error:La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+                DBMS.throwMessage( "ERROR:LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS "+ bdActual, ctx.getStart());
                 if (bdActual.isEmpty()){
-                    DBMS.throwMessage("Error: No se ha seleccionado una base de datos", ctx.getStart());
+                    DBMS.throwMessage("ERROR: NO SE HA SELECCIONADO UNA BASE DE DATOS", ctx.getStart());
                 }
             }
         return super.visitShow_column_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     
     }
 
-  
-    
     
     @Override
     public Object visitUpdate_value(sqlParser.Update_valueContext ctx) {
         
         String nombreTabla = ctx.getChild(1).getText();
         if (bdActual.isEmpty()){
-            DBMS.throwMessage("Error: no se ha seleccionado la base de datos");
+            DBMS.throwMessage("ERROR: NO SE HA SELECCIONADO LA BASE DE DATOS");
             return null;
         }
         if (!manejador.checkFile(bdActual, nombreTabla)){
-            DBMS.throwMessage("Error: la tabla "+ nombreTabla +" no existe", ctx.getStart());
+            DBMS.throwMessage("ERROR: LA TABLA "+ nombreTabla +" NO EXISTE ", ctx.getStart());
             return null;
         }
         tabla = (Tabla)json.JSONtoObject(bdActual, nombreTabla, "Tabla");
@@ -571,7 +569,7 @@ public class Visitor<T> extends sqlBaseVisitor {
         String nombreColumna = ctx.getChild(0).getText();
         boolean verificadorColumna = verificarColumnaUpdate(nombreColumna);
         if (!verificadorColumna){
-            DBMS.throwMessage("Error: La columna " +nombreColumna+ " no existe ");
+            DBMS.throwMessage("ERROR: LA COLUMNA " +nombreColumna+ " NO EXISTE ");
             tabla = null;
             return null;
         }
@@ -629,8 +627,8 @@ public class Visitor<T> extends sqlBaseVisitor {
                     }
                     else{
                         tabla = null;
-                        DBMS.throwMessage("Se ha actualizado 1 columna");
-                        DBMS.throwMessage("Error: no ha pasado verificacion de primary key");
+                        DBMS.throwMessage("SE HA ACTUALIZADO UNA COLUMNA");
+                        DBMS.throwMessage("ERROR: NO HA PASADO VERIFICACION DE PRIMARY KEY");
                     }
                }
            }
@@ -643,7 +641,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                } 
                else {
                        tabla = null;
-                       DBMS.throwMessage("Error: fecha con formato inválido ");
+                       DBMS.throwMessage("ERROR: FECHA CON FORMATO INVÁLIDO ");
                 }
                
            }
@@ -651,7 +649,7 @@ public class Visitor<T> extends sqlBaseVisitor {
            {   //hay que restar los 2 apostrofes del string
                if (valor.length()-2 > (int)array.get(2)){
                     tabla = null;
-                   DBMS.throwMessage("Error: el tamaño del char se excede del límite establecido ");
+                   DBMS.throwMessage("ERROR: EL TAMAÑO DEL CHAR SE EXCEDE DEL LÍMITE ESTABLECIDO");
                }
                else {
                     //si el indice a actualizar no existe, lo agregamos a la data
@@ -680,10 +678,10 @@ public class Visitor<T> extends sqlBaseVisitor {
            }
         }
         
-        DBMS.throwMessage("Se han actualizado " + cantidadUpdates + " columnas");
+        DBMS.throwMessage("SE HAN ACTUALIZADO " + cantidadUpdates + " COLUMNAS");
         } catch (Exception e){
             tabla = null;
-            DBMS.throwMessage("Error: ha ingresado un tipo incorrecto");
+            DBMS.throwMessage("ERROR : HA INGRESADO UN TIPO INCORRECTO");
         }
       
     }
@@ -734,8 +732,8 @@ public class Visitor<T> extends sqlBaseVisitor {
                     }
                     else{
                         tabla = null;
-                        DBMS.throwMessage("Se ha actualizado 1 columna");
-                        DBMS.throwMessage("Error: no ha pasado verificacion de primary key");
+                        DBMS.throwMessage("SE HA ACTUALIZADO UNA COLUMNA");
+                        DBMS.throwMessage("ERROR: NO HA PASADO VERIFICACIÓN DE PRIMARY KEY");
                     }
                }
            }
@@ -748,7 +746,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                } 
                else {
                        tabla = null;
-                       DBMS.throwMessage("Error: fecha con formato inválido ");
+                       DBMS.throwMessage("ERROR: FECHA CON FORMATO INVÁLIDO ");
                 }
                
            }
@@ -756,7 +754,7 @@ public class Visitor<T> extends sqlBaseVisitor {
            {   //hay que restar los 2 apostrofes del string
                if (valor.length()-2 > (int)array.get(2)){
                     tabla = null;
-                   DBMS.throwMessage("Error: el tamaño del char se excede del límite establecido ");
+                   DBMS.throwMessage("ERROR: EL TAMAÑO DEL CHART SE EXCEDE DEL LÍMITE ESTABLECIDO ");
                }
                else {
                     //si el indice a actualizar no existe, lo agregamos a la data
@@ -785,10 +783,10 @@ public class Visitor<T> extends sqlBaseVisitor {
            }
         }
         
-        DBMS.throwMessage("Se han actualizado " + cantidadUpdates + " columnas");
+        DBMS.throwMessage("SE HAN ACTUALIZADO " + cantidadUpdates + " COLUMNAS");
         } catch (Exception e){
             tabla = null;
-            DBMS.throwMessage("Error: ha ingresado un tipo incorrecto");
+            DBMS.throwMessage("ERROR: HA INGRESADO UN TIPO INCORRECTO");
         }
       
     }
@@ -845,12 +843,12 @@ public class Visitor<T> extends sqlBaseVisitor {
             String nombreColumna = ctx.getChild(2).getText();
             Tabla tablaLocal = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
             if(visitorPablo.tableExist(nombreTabla)<0){
-                DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS "+ bdActual, ctx.getStart());
                 return "error";
             }
             int indiceColumna = visitorPablo.columnExist(nombreTabla, nombreColumna);
             if(indiceColumna<0){
-                DBMS.throwMessage( "Error: La Columna: "+nombreColumna+" no existe en la tabla "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA COLUMNA: "+nombreColumna+" NO EXISTE EN LA TABLA "+ nombreTabla, ctx.getStart());
                 return "error";
             }
             return tablaLocal.getColumnas().get(indiceColumna).getTipo();
@@ -864,11 +862,11 @@ public class Visitor<T> extends sqlBaseVisitor {
                 System.out.println(contenido+ " contenido");
                 if(contenido.contains("\'")){
                     if(!contenido.startsWith("\'")){
-                        DBMS.throwMessage( "String o char debe comenzar con \'", ctx.getStart());
+                        DBMS.throwMessage( "STRING  O  CHAR DEBE COMENZAR CON  \'", ctx.getStart());
                         return "error";
                     }else
                         if(!contenido.endsWith("\'")){
-                            DBMS.throwMessage( "String o char debe terminar con \'", ctx.getStart());
+                            DBMS.throwMessage( "STRING O CHAR DEBE TERMINAR CON  \'", ctx.getStart());
                             return "error";
                         }else if (this.countOccurrences(contenido, '-')==2){
                             return "DATE";
@@ -892,7 +890,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             nombreTabla = ctx.getParent().getParent().getParent().getParent().getChild(1).getText();
                     int indiceColumna = visitorPablo.columnExist(nombreTabla,contenido);
                     if(indiceColumna<0){
-                        DBMS.throwMessage( "Error: La Columna: "+contenido+" no existe en la tabla ", ctx.getStart());
+                        DBMS.throwMessage( "ERROR: LA COLUMNA: "+contenido+" NO EXISTE EN LA TABLA ", ctx.getStart());
                         return "error";
                     }
                     return tabla.getColumnas().get(indiceColumna).getTipo();
@@ -1016,7 +1014,7 @@ public class Visitor<T> extends sqlBaseVisitor {
         String x = ctx.getChild(0).getText();String z = ctx.getChild(2).getText();
         //CAMBIAR CAMBIAR CAMBIAR CAMBIAR CAMBIAR EL RETURN
         if(!op1.equals(op2)&&!op1.equals("NULL")&&!op2.equals("NULL")){
-            DBMS.throwMessage( "Error: La comparación no se realizó con los mismos tipos de variables", ctx.getStart());
+            DBMS.throwMessage( "ERROR: LA COMPARACIÓN NO SE REALIZÓ CON LOS MISMOS TIPOS DE VARIABLES ", ctx.getStart());
             return "error";
         }
         
@@ -1065,7 +1063,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE ENTRE TIPOS DE DATO INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1102,7 +1100,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR: LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -1138,7 +1136,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR : LA COMPARACIÓN > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1177,7 +1175,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1311,7 +1309,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE ENTRE INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1348,7 +1346,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR : LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -1384,7 +1382,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR: LA COMPARACIÓN  > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1423,7 +1421,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1558,7 +1556,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR : LA COMPARACIÓN < SOLO SE PUEDE ENTRE TIPO DE DATO INT", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1595,7 +1593,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR : LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -1631,7 +1629,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR : LA COMPARACIÓN > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1670,7 +1668,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1795,11 +1793,11 @@ public class Visitor<T> extends sqlBaseVisitor {
     public Object visitDelete_value(sqlParser.Delete_valueContext ctx) {
      String nombreTabla = ctx.getChild(2).getText();
         if (bdActual.isEmpty()){
-            DBMS.throwMessage("Error: no se ha seleccionado la base de datos");
+            DBMS.throwMessage("ERROR: NO SE HA SELECCIONADO LA BASE DE DATOS ");
             return null;
         }
         if (!manejador.checkFile(bdActual, nombreTabla)){
-            DBMS.throwMessage("Error: la tabla "+ nombreTabla +" no existe", ctx.getStart());
+            DBMS.throwMessage("ERROR: LA TABLA  "+ nombreTabla +" NO EXISTE ", ctx.getStart());
             return null;
         }
         tabla = (Tabla)json.JSONtoObject(bdActual, nombreTabla, "Tabla");
@@ -1829,7 +1827,7 @@ public class Visitor<T> extends sqlBaseVisitor {
                                         T valor1 = (T)tab.getDataInTable().get(y).get(temp);
                                         T valor2 = (T)tabla.getDataInTable().get((int)indexActuales.get(h)).get(index2);
                                         if(valor1.equals(valor2)){
-                                            DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" tiene referencias en otra(s) tablas sobre llaves foraneas, no se puede eliminar", ctx.getStart());
+                                            DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" TIENE REFERENCIAS EN OTRA(S) TABLAS SOBRE LLAVES FORÁNEAS, NO SE PUEDE ELIMINAR ", ctx.getStart());
                                         return null;
                                         }
                                     }
@@ -1849,7 +1847,4 @@ public class Visitor<T> extends sqlBaseVisitor {
     
     }
     
-    
-    
-  
 }
