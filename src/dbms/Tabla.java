@@ -9,7 +9,7 @@ package dbms;
 import java.util.ArrayList;
 
 /**
- * Esta clase modela cada estructura tabla que se guarda en un JSON.
+ * Esta clase modela cada estructura de tabla que se guarda en un JSON.
  * @author Pablo
  */
 public class Tabla {
