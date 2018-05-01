@@ -44,13 +44,9 @@ public class TuplaDB {
         this.cantidadTablas++;
     }
     
-    
-
     @Override
     public String toString() {
         return "TuplaDB{" + "nombreDB=" + nombreDB + ", cantidadTablas=" + cantidadTablas + '}';
     }
-    
-    
     
 }
