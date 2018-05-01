@@ -43,8 +43,5 @@ public class TuplaTabla {
     public String toString() {
         return "TuplaTabla{" + "nombreTabla=" + nombreTabla + ", cantidadRegistros=" + cantidadRegistros + '}';
     }
-    
-    
-    
-    
+   
 }
