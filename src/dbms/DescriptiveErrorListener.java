@@ -1,7 +1,6 @@
 package dbms;
 
 
-
 import static dbms.ANTGui.jTextArea3;
 import java.awt.Color;
 import java.util.Collections;
@@ -40,7 +39,7 @@ public class DescriptiveErrorListener extends BaseErrorListener {
         offendingSymbol+": "+msg + "\n\r";
        
        
-       agregarLog("Un error inesperado ha ocurrido " +"\n" + mensaje, line, charPositionInLine,true);
+       agregarLog("ERROR NO IDENTIFICADO" +"\n" + mensaje, line, charPositionInLine,true);
         
         
     }
@@ -59,9 +58,7 @@ public class DescriptiveErrorListener extends BaseErrorListener {
             StyleConstants.setForeground(style, Color.blue);
             try { doc.insertString(doc.getLength(), "linea: " + linea +": "+ columna +  " " + mensaje+"\n",style); }
             catch (BadLocationException e){}
-        }
-        
-       
+        } 
         
     }
 }

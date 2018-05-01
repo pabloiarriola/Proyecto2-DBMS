@@ -77,10 +77,4 @@ public class Constraint {
         return "Constraint{" + "nombre=" + nombre + ", tipo=" + tipo + ", references=" + references + ", referencesForeign=" + referencesForeign + ", tuplaCheck=" + tuplaCheck + '}';
     }
     
-    
-
-    
-    
-            
-
 }
