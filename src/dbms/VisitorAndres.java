@@ -596,7 +596,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         int indexOfColumn = getIndexOfColumn(referenceOwner, tablaOwner.getColumnas());
         
         if (indexOfColumn == -1) {
-            System.out.println("La vida no es justa, no encontró el índice");
+            System.out.println("La vida no es justa JA JA, no encontró el índice");
         }
         
         T dato_eval = dataInsert.get(indexOfColumn);
@@ -621,7 +621,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         int indexOfColumn = getIndexOfColumn(nombreColumna, table.getColumnas());
         
         if (indexOfColumn == -1) {
-            System.out.println("No se encontró índice de la columna");
+            System.out.println("Error, No se encontró índice de la columna");
             return null;
         }
         

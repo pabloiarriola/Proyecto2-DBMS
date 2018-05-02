@@ -52,7 +52,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
     @Override
     public Object visitDrop_table_statement(sqlParser.Drop_table_statementContext ctx) {
         String nombreTabla =  ctx.getChild(2).getText(); 
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro que desea eliminar la tabla "+nombreTabla+" ?");
+        int dialogResult = JOptionPane.showConfirmDialog (null, "¿SEGURO QUE DESEA ELIMINAR LA TABLA "+nombreTabla+" ?");
         if(dialogResult == JOptionPane.NO_OPTION || dialogResult == JOptionPane.CANCEL_OPTION){
             return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
         }
@@ -76,16 +76,16 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 }
             }
             if(existe){
-                DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" tiene referencias en otra(s) tablas sobre llaves foraneas, no se puede eliminar", ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" TIENE REFERENCIA EN OTRA(S) TABLAS SOBRE LLAVES FORANEAS, NO SE PUEDE ELIMINAR ", ctx.getStart());
                 return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
             }
           
             boolean eliminacion = manejador.deleteTable(bdActual, nombreTabla);
             if (eliminacion ){
-                DBMS.throwMessage("Se ha eliminado la tabla " + nombreTabla, ctx.getStart());
+                DBMS.throwMessage("SE HA ELIMINADO LA TABLA " + nombreTabla, ctx.getStart());
             }
             else{
-                DBMS.throwMessage("Error: ha ocurrido un problema al eliminar la tabla " + nombreTabla, ctx.getStart());
+                DBMS.throwMessage("ERROR: HA OCURRIDO UN PROBLEMA AL ELIMINAR LA TABLA " + nombreTabla, ctx.getStart());
             }
         
             for(int i = 0;i<ar.getTablas().size();i++){
@@ -94,7 +94,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             }
             json.objectToJSON(bdActual, "MasterTable"+bdActual, ar);
         }else
-            DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+            DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS  "+ bdActual, ctx.getStart());
         return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }  
     @Override
@@ -121,7 +121,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         for(int i = 0;i<tabla.getColumnas().size();i++) {
             if(tabla.getColumnas().get(i).getNombre().equals(nombreColumna)){
                 existe = true;
-                DBMS.throwMessage( "Error: Columna: "+nombreColumna+" ya existe en la tablana "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA COLUMNA: "+nombreColumna+" YA EXISTE EN LA TABLA"+ nombreTabla, ctx.getStart());
                
             }   
         }
@@ -132,7 +132,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             for(int i = 0;i<tabla.getDataInTable().size();i++)
                 tabla.getDataInTable().get(i).add("NULL");
             json.objectToJSON(bdActual, nombreTabla, tabla);
-            DBMS.throwMessage( "columna: "+nombreColumna+" agregada a la tabla: "+ nombreTabla, ctx.getStart());
+            DBMS.throwMessage( "LA COLUMNA: "+nombreColumna+" SE HA AGREGADO A LA TABLA: "+ nombreTabla, ctx.getStart());
         }
       return super.visitAccionAddColumn(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -159,7 +159,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         if(tab.getConstraints().get(j).getTipo().equals("foreign")){
                             if(tab.getConstraints().get(j).getReferencesForeign().getNombreTablaRef().equals(nombreTabla)&&tab.getConstraints().get(j).getReferencesForeign().getReferencesForeign().contains(nombreColumna)){
                                 existe = true;
-                                DBMS.throwMessage( "Error: La columna: "+nombreColumna+" tiene referencias en otra(s) tablas sobre llaves foraneas, no se puede eliminar", ctx.getStart());
+                                DBMS.throwMessage( "ERROR:LA COLUMNA: "+nombreColumna+" TIENE REFERENCIAS EN OTRA(S) TABLAS SOBRE LLAVES FORANEAS, NO SE PUEDE ELIMINAR ", ctx.getStart());
                                 return super.visitAccionDropColumn(ctx); //To change body of generated methods, choose Tools | Templates.
                             }
                         }
