@@ -85,7 +85,7 @@ public class ANTGui extends javax.swing.JFrame {
         renderer.setLeafIcon(icon2);
 
         File[] files = new File("DB").listFiles();
-        //If this pathname does not denote a directory, then listFiles() returns null. 
+        //Si este nombre de ruta no denota un directorio, listFiles () devuelve null
         int count=0;
         for (File file : files) {
             if (file.isDirectory()){
@@ -484,7 +484,7 @@ public class ANTGui extends javax.swing.JFrame {
             
             CharStream cs =  new ANTLRInputStream(in);
 
-           sqlLexer lexer = new sqlLexer(cs);
+            sqlLexer lexer = new sqlLexer(cs);
             lexer.removeErrorListeners();
             lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
             CommonTokenStream tokens = new CommonTokenStream( lexer);
@@ -573,15 +573,12 @@ public class ANTGui extends javax.swing.JFrame {
     
      public void crearArchivo(String output,File archivo){
         try {
-            
-             
                
                 FileWriter fw = new FileWriter(archivo);
                 BufferedWriter bw = new BufferedWriter(fw);
                
                 bw.write(output);
-            
-
+        
                 bw.close();
 
                 System.out.println("Se ha guardado el archivo exitosamente");
@@ -600,6 +597,7 @@ public class ANTGui extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -634,8 +632,6 @@ public class ANTGui extends javax.swing.JFrame {
         
     }
     
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
