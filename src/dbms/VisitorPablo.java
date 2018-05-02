@@ -1137,7 +1137,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE ENTRE TIPO DE DATO INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1174,7 +1174,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR: LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -1210,7 +1210,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR: LA COMPARACIÓN > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1249,7 +1249,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1356,12 +1356,12 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
              String nombreTabla = ctx.getChild(0).getText();
             Tabla tabla = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
             if(tableExist(nombreTabla)<0){
-                DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS "+ bdActual, ctx.getStart());
                 return "error";
             }
             int indiceColumna = columnExist(nombreTabla,nombreColumna);
             if(indiceColumna<0){
-                DBMS.throwMessage( "Error: La Columna: "+nombreColumna+" no existe en la tabla "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA COLUMNA : "+nombreColumna+" NO EXISTE EN LA TABLA  "+ nombreTabla, ctx.getStart());
                 return "error";
             }
             System.out.println(tabla.getColumnas().get(indiceColumna).getTipo());
@@ -1376,11 +1376,11 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 System.out.println(contenido+ " contenido");
                 if(contenido.contains("\'")){
                     if(!contenido.startsWith("\'")){
-                        DBMS.throwMessage( "String o char debe comenzar con \'", ctx.getStart());
+                        DBMS.throwMessage( "STRING O CHAR DEBE COMENZAR CON  \'", ctx.getStart());
                         return "error";
                     }else
                         if(!contenido.endsWith("\'")){
-                            DBMS.throwMessage( "String o char debe terminar con \'", ctx.getStart());
+                            DBMS.throwMessage( "STRING O CHAR DEBE TERMINAR CON  \'", ctx.getStart());
                             return "error";
                         }else if (this.countOccurrences(contenido, '-')==2){
                             return "DATE";
@@ -1415,7 +1415,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                       
                     int indiceColumna = columnExist(nombreTabla,contenido);
                     if(indiceColumna<0){
-                        DBMS.throwMessage( "Error: La Columna: "+contenido+" no existe en la tabla ", ctx.getStart());
+                        DBMS.throwMessage( "ERROR: LA COLUMNA: "+contenido+" NO EXISTE EN LA TABLA  ", ctx.getStart());
                         return "error";
                     }
                     Tabla tabla = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
@@ -1597,7 +1597,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 }
                 if (!verificador){
                    
-                        DBMS.throwMessage("Error: La columna " + select_value +" no existe en las tablas seleccionadas ", ctx.getStart());
+                        DBMS.throwMessage("ERROR: LA COLUMNA " + select_value +" NO EXISTE EN LAS TABLAS SELECCIONADAS ", ctx.getStart());
                         return new ArrayList();
                    
                 }
