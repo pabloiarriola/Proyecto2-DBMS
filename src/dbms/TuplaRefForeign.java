@@ -42,9 +42,5 @@ public class TuplaRefForeign {
     public String toString() {
         return "TuplaRefForeign{" + "nombreTablaRef=" + nombreTablaRef + ", columnaRef=" + this.columnaForeign + '}';
     }
-    
-    
-    
-    
+      
 }
-

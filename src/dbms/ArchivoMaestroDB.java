@@ -15,7 +15,6 @@ public class ArchivoMaestroDB {
          this.basesDeDatos = new ArrayList();
     }
    
-    
     public void agregarDB(String nombreDB){
         this.basesDeDatos.add(new TuplaDB(nombreDB));
     }
@@ -48,7 +47,4 @@ public class ArchivoMaestroDB {
         return "BaseDatos{" + "nombreDB=" + basesDeDatos+ '}';
     }
 
-   
-    
-    
 }

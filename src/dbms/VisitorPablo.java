@@ -52,7 +52,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
     @Override
     public Object visitDrop_table_statement(sqlParser.Drop_table_statementContext ctx) {
         String nombreTabla =  ctx.getChild(2).getText(); 
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro que desea eliminar la tabla "+nombreTabla+" ?");
+        int dialogResult = JOptionPane.showConfirmDialog (null, "¿SEGURO QUE DESEA ELIMINAR LA TABLA "+nombreTabla+" ?");
         if(dialogResult == JOptionPane.NO_OPTION || dialogResult == JOptionPane.CANCEL_OPTION){
             return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
         }
@@ -76,16 +76,16 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 }
             }
             if(existe){
-                DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" tiene referencias en otra(s) tablas sobre llaves foraneas, no se puede eliminar", ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" TIENE REFERENCIA EN OTRA(S) TABLAS SOBRE LLAVES FORANEAS, NO SE PUEDE ELIMINAR ", ctx.getStart());
                 return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
             }
           
             boolean eliminacion = manejador.deleteTable(bdActual, nombreTabla);
             if (eliminacion ){
-                DBMS.throwMessage("Se ha eliminado la tabla " + nombreTabla, ctx.getStart());
+                DBMS.throwMessage("SE HA ELIMINADO LA TABLA " + nombreTabla, ctx.getStart());
             }
             else{
-                DBMS.throwMessage("Error: ha ocurrido un problema al eliminar la tabla " + nombreTabla, ctx.getStart());
+                DBMS.throwMessage("ERROR: HA OCURRIDO UN PROBLEMA AL ELIMINAR LA TABLA " + nombreTabla, ctx.getStart());
             }
         
             for(int i = 0;i<ar.getTablas().size();i++){
@@ -94,7 +94,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             }
             json.objectToJSON(bdActual, "MasterTable"+bdActual, ar);
         }else
-            DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+            DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS  "+ bdActual, ctx.getStart());
         return super.visitDrop_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }  
     @Override
@@ -121,7 +121,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         for(int i = 0;i<tabla.getColumnas().size();i++) {
             if(tabla.getColumnas().get(i).getNombre().equals(nombreColumna)){
                 existe = true;
-                DBMS.throwMessage( "Error: Columna: "+nombreColumna+" ya existe en la tablana "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA COLUMNA: "+nombreColumna+" YA EXISTE EN LA TABLA"+ nombreTabla, ctx.getStart());
                
             }   
         }
@@ -132,7 +132,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             for(int i = 0;i<tabla.getDataInTable().size();i++)
                 tabla.getDataInTable().get(i).add("NULL");
             json.objectToJSON(bdActual, nombreTabla, tabla);
-            DBMS.throwMessage( "columna: "+nombreColumna+" agregada a la tabla: "+ nombreTabla, ctx.getStart());
+            DBMS.throwMessage( "LA COLUMNA: "+nombreColumna+" SE HA AGREGADO A LA TABLA: "+ nombreTabla, ctx.getStart());
         }
       return super.visitAccionAddColumn(ctx); //To change body of generated methods, choose Tools | Templates.
     }
@@ -159,7 +159,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         if(tab.getConstraints().get(j).getTipo().equals("foreign")){
                             if(tab.getConstraints().get(j).getReferencesForeign().getNombreTablaRef().equals(nombreTabla)&&tab.getConstraints().get(j).getReferencesForeign().getReferencesForeign().contains(nombreColumna)){
                                 existe = true;
-                                DBMS.throwMessage( "Error: La columna: "+nombreColumna+" tiene referencias en otra(s) tablas sobre llaves foraneas, no se puede eliminar", ctx.getStart());
+                                DBMS.throwMessage( "ERROR:LA COLUMNA: "+nombreColumna+" TIENE REFERENCIAS EN OTRA(S) TABLAS SOBRE LLAVES FORANEAS, NO SE PUEDE ELIMINAR ", ctx.getStart());
                                 return super.visitAccionDropColumn(ctx); //To change body of generated methods, choose Tools | Templates.
                             }
                         }
@@ -202,11 +202,11 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         tabla.getColumnas().remove(i);
                 for(int i = 0;i<indices.size();i++)
                     tabla.getConstraints().remove((int) indices.get(i)-i);
-                DBMS.throwMessage( "columna: "+nombreColumna+" eliminada de la tabla: "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "COLUMNA: "+nombreColumna+"HA SIDO ELIMINADA DE LA TABLA: "+ nombreTabla, ctx.getStart());
                 json.objectToJSON(bdActual, nombreTabla, tabla);
             }
         }else
-            DBMS.throwMessage( "Error: Columna: "+nombreColumna+" no existe en la tabla "+ nombreTabla, ctx.getStart());
+            DBMS.throwMessage( "ERROR: COLUMNA: "+nombreColumna+" NO EXISTE EN LA TABLA "+ nombreTabla, ctx.getStart());
         return super.visitAccionDropColumn(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -224,10 +224,10 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
              indice = i;
          }
         if(!existe)
-             DBMS.throwMessage( "Error: constraint: "+nombreConstraint+" no existe en la tabla "+ nombreTabla, ctx.getStart());
+             DBMS.throwMessage( "ERROR: CONSTRAINT: "+nombreConstraint+" NO EXISTE EN LA TABLA "+ nombreTabla, ctx.getStart());
         else{
              tabla.getConstraints().remove(indice);
-             DBMS.throwMessage( "constraint: "+nombreConstraint+" eliminado la tabla "+ nombreTabla, ctx.getStart());
+             DBMS.throwMessage( "CONSTRAINT: "+nombreConstraint+" ELIMINADO DE LA TABLA "+ nombreTabla, ctx.getStart());
              json.objectToJSON(bdActual, nombreTabla, tabla);
         }
         return super.visitAccionDropConstraint(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -241,7 +241,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             for (int i = 0;i<ctx.getChildCount();i++)
                 this.visit(ctx.getChild(i));
         }else
-            DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+            DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS "+ bdActual, ctx.getStart());
         return null;
     }
     /**
@@ -278,14 +278,14 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         if(tipoConstraint.equals("primary"))
             for(int i = 0;i<tabla.getConstraints().size();i++){
                 if(tabla.getConstraints().get(i).getTipo().equals("primary")){
-                     DBMS.throwMessage("Error: Constraint primary key ya existe en la tabla " + nombreTabla, ctx.getStart() );
+                     DBMS.throwMessage("ERROR: CONSTRAINT PRIMARY KEY YA EXISTE EN LA TABLA  " + nombreTabla, ctx.getStart() );
                     return super.visitConstraintPrimaryKeyAlter(ctx); //To change body of generated methods, choose Tools | Templates.
                 }
             }        
         ArrayList<TuplaColumna> camposActuales = tabla_c.getColumnas();
         for (int i =0;i<tabla.getConstraints().size();i++){
              if (tabla.getConstraints().get(i).getNombre().equals(nombreConstraint)){
-                 DBMS.throwMessage("Error: el nombre del constraint " + nombreConstraint + " ya ha sido usado",ctx.getStart());
+                 DBMS.throwMessage("ERROR: EL NOMBRE DEL CONSTRAINT " + nombreConstraint + " YA HA SIDO UTILIZADO ",ctx.getStart());
                  tabla = null;
                  return null;
                 }
@@ -294,11 +294,11 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         if (verificador){
             constraint.setReferences(listadoIDS);
             tabla.addConstraint(constraint);
-            DBMS.debug("Se ha agregado el constraint " + nombreConstraint + " a la tabla " + nombreTabla, ctx.getStart());
+            DBMS.debug("SE HA AGREGADO EL CONSTRAINT  " + nombreConstraint + " A LA TABLA" + nombreTabla, ctx.getStart());
             json.objectToJSON(bdActual, nombreTabla, tabla);
         }
         else{
-             DBMS.throwMessage("Error: campo "+listadoIDS+" no existe en la tabla " + nombreTabla, ctx.getStart() );
+             DBMS.throwMessage("ERROR: CAMPO "+listadoIDS+" NO EXISTE EN LA TABLA " + nombreTabla, ctx.getStart() );
              tabla = null; //ya no se guarda la tabla.
         }
         return super.visitConstraintPrimaryKeyAlter(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -315,7 +315,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         Tabla tabla = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
         for(int i = 0;i<tabla.getConstraints().size();i++)
             if(tabla.getConstraints().get(i).getNombre().equals(nombreConstraint)){
-                DBMS.throwMessage("Error: Constraint "+nombreConstraint+" ya existe en la tabla " + nombreTabla,ctx.getStart() );
+                DBMS.throwMessage("ERROR: CONSTRAINT  "+nombreConstraint+" YA EXISTE EN LA TABLA " + nombreTabla,ctx.getStart() );
                 return super.visitConstraintForeignKeyAlter(ctx); //To change body of generated methods, choose Tools | Templates.
             }
          String nombreTablaRef = ctx.getChild(7).getText();
@@ -333,7 +333,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             boolean verificadorRef = this.revisarListadoIDs(columnasRef, listadoIDSREF);
             //si no existen los campos en la referencia
             if (!verificadorRef){//no pasa la validación
-                DBMS.throwMessage("No existe algún campo de " +listadoIDSREF, ctx.getStart());
+                DBMS.throwMessage("NO EXISTE ALGÚN CAMPO DE  " +listadoIDSREF, ctx.getStart());
                 tabla = null;
                 return null;
             }
@@ -350,11 +350,11 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             if (verificador){
                 constraint.setReferences(listadoIDS);
                 tabla.addConstraint(constraint);
-                DBMS.debug("Se ha agregado el constraint " + nombreConstraint,ctx.getStart());
+                DBMS.debug("SE HA AGREGADO EL CONSTRAINT  " + nombreConstraint,ctx.getStart());
                 json.objectToJSON(bdActual, nombreTabla, tabla);
             }
             else{
-                 DBMS.throwMessage("Error: campo "+listadoIDS+" no existe en la tabla " + nombreTabla,ctx.getStart() );
+                 DBMS.throwMessage("ERROR: CAMPO "+listadoIDS+" NO EXISTE EN LA TABLA " + nombreTabla,ctx.getStart() );
                  tabla = null; //ya no se guarda la tabla.
             }
         
@@ -373,8 +373,6 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             constraint.setNombre(nombreConstraint);
         
             
-         
-            
             ArrayList<Constraint> columnas = tabla.getConstraints();
             boolean verCheck = true;
             for (int i = 0;i<columnas.size();i++){
@@ -384,7 +382,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             }
             if (!verCheck){
                 tabla = null;
-                DBMS.throwMessage("Error: El nombre del constraint "+nombreConstraint + " ya existe " , ctx.getStart());
+                DBMS.throwMessage("ERROR:EL NOMBRE DEL CONSTRAINT "+nombreConstraint + " YA EXISTE " , ctx.getStart());
                 return null;
             }
            
@@ -401,7 +399,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             }
             this.globalLogic = "";
             tabla.addConstraint(constraint);
-            DBMS.debug("Se ha agregado el constraint " + nombreConstraint, ctx.getStart());
+            DBMS.debug("SE HA AGREGADO EL CONSTRAINT " + nombreConstraint, ctx.getStart());
             json.objectToJSON(bdActual, nombreTabla, tabla);
         
         
@@ -451,7 +449,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
             for(int i = 0;i<archivo.getTablas().size();i++)
                 model.addRow(new Object[]{archivo.getTablas().get(i).getNombreTabla(),archivo.getTablas().get(i).getCantidadRegistros()});
         }else
-           DBMS.throwMessage("Error: No hay base de datos seleccionada ", ctx.getStart() ); 
+           DBMS.throwMessage("ERROR: NO HAY BASE DE DATOS SELECCIONADA ", ctx.getStart() ); 
         return super.visitShow_table_statement(ctx); //To change body of generated methods, choose Tools | Templates.
     }
  
@@ -571,7 +569,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
         String x = ctx.getChild(0).getText();String z = ctx.getChild(2).getText();
         //CAMBIAR CAMBIAR CAMBIAR CAMBIAR CAMBIAR EL RETURN
         if(!op1.equals(op2)&&!op1.equals("NULL")&&!op2.equals("NULL")){
-            DBMS.throwMessage( "Error: La comparación no se realizó con los mismos tipos de variables", ctx.getStart());
+            DBMS.throwMessage( "ERROR: LA COMPARACIÓN NO SE REALIZÓ CON LOS MISMO TIPOS DE VARIABLES ", ctx.getStart());
             return "error";
         }
         
@@ -624,7 +622,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE HACER ENTRE TIPO DE DATO INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -661,7 +659,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR: LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -697,7 +695,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR: LA COMPARACIÓN > SOLO SE PUEDE HACER ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -736,7 +734,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -892,7 +890,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE ENTRE INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -929,7 +927,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR: LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -965,7 +963,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR: LA COMPARACIÓN > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1004,7 +1002,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1139,7 +1137,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                         }
                         
                         else{
-                            DBMS.throwMessage( "Error: la comparacion < solo se puede entre int", ctx.getStart());
+                            DBMS.throwMessage( "ERROR: LA COMPARACIÓN < SOLO SE PUEDE ENTRE TIPO DE DATO INT ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1176,7 +1174,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                           DBMS.throwMessage( "Error: la comparacion <= solo se puede entre int o dates", ctx.getStart());
+                           DBMS.throwMessage( "ERROR: LA COMPARACIÓN <= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE", ctx.getStart());
                             return "error";
                         }
                     case ">":
@@ -1212,7 +1210,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                             DBMS.throwMessage( "Error: la comparacion > solo se puede entre int o dates", ctx.getStart());
+                             DBMS.throwMessage( "ERROR: LA COMPARACIÓN > SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1251,7 +1249,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                             }
                         }
                         else{
-                              DBMS.throwMessage( "Error: la comparacion >= solo se puede entre int o date", ctx.getStart());
+                              DBMS.throwMessage( "ERROR: LA COMPARACIÓN >= SOLO SE PUEDE ENTRE TIPO DE DATO INT O TIPO DE DATO DATE ", ctx.getStart());
                             return "error";
                         }
                     break;
@@ -1358,12 +1356,12 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
              String nombreTabla = ctx.getChild(0).getText();
             Tabla tabla = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
             if(tableExist(nombreTabla)<0){
-                DBMS.throwMessage( "Error: La tabla: "+nombreTabla+" no existe en la base de datos "+ bdActual, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA TABLA: "+nombreTabla+" NO EXISTE EN LA BASE DE DATOS "+ bdActual, ctx.getStart());
                 return "error";
             }
             int indiceColumna = columnExist(nombreTabla,nombreColumna);
             if(indiceColumna<0){
-                DBMS.throwMessage( "Error: La Columna: "+nombreColumna+" no existe en la tabla "+ nombreTabla, ctx.getStart());
+                DBMS.throwMessage( "ERROR: LA COLUMNA : "+nombreColumna+" NO EXISTE EN LA TABLA  "+ nombreTabla, ctx.getStart());
                 return "error";
             }
             System.out.println(tabla.getColumnas().get(indiceColumna).getTipo());
@@ -1378,11 +1376,11 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 System.out.println(contenido+ " contenido");
                 if(contenido.contains("\'")){
                     if(!contenido.startsWith("\'")){
-                        DBMS.throwMessage( "String o char debe comenzar con \'", ctx.getStart());
+                        DBMS.throwMessage( "STRING O CHAR DEBE COMENZAR CON  \'", ctx.getStart());
                         return "error";
                     }else
                         if(!contenido.endsWith("\'")){
-                            DBMS.throwMessage( "String o char debe terminar con \'", ctx.getStart());
+                            DBMS.throwMessage( "STRING O CHAR DEBE TERMINAR CON  \'", ctx.getStart());
                             return "error";
                         }else if (this.countOccurrences(contenido, '-')==2){
                             return "DATE";
@@ -1417,7 +1415,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                       
                     int indiceColumna = columnExist(nombreTabla,contenido);
                     if(indiceColumna<0){
-                        DBMS.throwMessage( "Error: La Columna: "+contenido+" no existe en la tabla ", ctx.getStart());
+                        DBMS.throwMessage( "ERROR: LA COLUMNA: "+contenido+" NO EXISTE EN LA TABLA  ", ctx.getStart());
                         return "error";
                     }
                     Tabla tabla = (Tabla) json.JSONtoObject(bdActual, nombreTabla, "Tabla");
@@ -1599,7 +1597,7 @@ public class VisitorPablo <T> extends sqlBaseVisitor {
                 }
                 if (!verificador){
                    
-                        DBMS.throwMessage("Error: La columna " + select_value +" no existe en las tablas seleccionadas ", ctx.getStart());
+                        DBMS.throwMessage("ERROR: LA COLUMNA " + select_value +" NO EXISTE EN LAS TABLAS SELECCIONADAS ", ctx.getStart());
                         return new ArrayList();
                    
                 }

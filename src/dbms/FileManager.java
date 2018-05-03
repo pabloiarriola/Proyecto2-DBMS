@@ -25,15 +25,15 @@ public class FileManager {
         File file = new File("DB/"+nameDir);
         if (!file.exists()) {
             if (file.mkdir()) {
-               DBMS.debug("Base de datos creada");
+               DBMS.debug("BASE DE DATOS CREADA CON EXITO");
             }
             else{
-                 DBMS.debug("Ha ocurrido un error");
+                 DBMS.debug("HA OCURRIDO UN ERROR AL CREAR LA BASE DE DATOSr");
                 return false;
             }
         return true;
         }else{
-             DBMS.debug("La base de datos ya existe");
+             DBMS.debug("ERROR, LA BASE DE DATOS" +nameDir+ "YA EXISTE");
             return false;
         }
     }
@@ -57,7 +57,7 @@ public class FileManager {
 
         return true;
         }else{
-            DBMS.debug("La tabla " +fileName + " ya existe en la base de datos " + path );
+            DBMS.debug("LA TABLA" +fileName + " YA EXISTE EN LA BASE DE DATOS" + path );
             return false;
     }
     }
@@ -80,15 +80,13 @@ public class FileManager {
      */
     public boolean checkDB(String db){
         if (db.isEmpty()){
-            DBMS.debug("La base de datos es inválida");
+            DBMS.debug("ERROR, LA BASE DE DATOS NO ES VÁLIDA");
             return false;
         }
 
         File file = new File("DB/"+db+"/");
         
         if (!file.exists()) {
-
-         
 
            return false;
         }else{
@@ -118,7 +116,7 @@ public class FileManager {
     		if(file.list().length==0){
     			
     		   file.delete();
-    		   DBMS.debug("Base de datos eliminada : " 
+    		   DBMS.debug("LA BASE DE DATOS HA SIDO ELIMINADA: " 
                                                  + file.getAbsolutePath());
     			
     		}else{
@@ -137,7 +135,7 @@ public class FileManager {
         	   //check the directory again, if empty then delete it
         	   if(file.list().length==0){
            	    file.delete();
-                    DBMS.debug("Base de datos eliminada : "
+                    DBMS.debug("LA BASE DE DATOS HA SIDO ELIMINADA : "
                                 + file.getAbsolutePath());
                    }
     		}
@@ -145,7 +143,7 @@ public class FileManager {
     	}else{
     		//if file, then delete it
     		file.delete();
-    		DBMS.debug("Archivo eliminado : " + file.getAbsolutePath());
+    		DBMS.debug("EL ARCHIVO HA SIDO ELIMINADO: " + file.getAbsolutePath());
     	}
     }
     
@@ -154,9 +152,9 @@ public class FileManager {
         File newfile =new File("DB/"+file2);
 
         if(oldfile.renameTo(newfile)){
-               DBMS.debug("Se ha renombrado la base de datos");
+               DBMS.debug("SE HA RENOMBRADO LA BASE DE DATOS");
         }else{
-               DBMS.debug("No se ha podido renombrar la base de datos");
+               DBMS.debug("ERROR, NO SE HA PODIDO RENOMBRAR LA BASE DE DATOS");
         }
         
         
@@ -167,9 +165,9 @@ public class FileManager {
         File newfile =new File("DB/"+db+"/"+file2+".json");
 
         if(oldfile.renameTo(newfile)){
-               DBMS.debug("Se ha renombrado el archivo " + file1 +" a " +file2);
+               DBMS.debug("SE HA RENOMBRADO EL ARCHIVO" + file1 +" a " +file2);
         }else{
-               DBMS.debug("Error: No se ha renombrado " + file1 +" a " +file2);
+               DBMS.debug("ERROR: NO SE HA RENOMBRADO EL ARCHIVO " + file1 +" a " +file2);
         }
     }
     

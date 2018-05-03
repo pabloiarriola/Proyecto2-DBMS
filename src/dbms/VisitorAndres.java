@@ -42,7 +42,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         
         /* Verificar si la tabla existe */
         if (tabla == null) {
-            DBMS.throwMessage("Error: Insert fallido, la tabla " + nombreTabla + " no existe", ctx.getStart());
+            DBMS.throwMessage("ERROR: INSERT FALLIDO, LA TABLA " + nombreTabla + "NO EXISTE", ctx.getStart());
             
             return null;
         }
@@ -69,7 +69,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         
         // Si la cantidad de valores del insert es mayor que la que necesitamos está mal
         if (insertValues.size() > cantColumnasTabla) {
-            DBMS.throwMessage("Insert Error: Cantidad de valores mayor de los necesarios", ctx.getStart());
+            DBMS.throwMessage("INSERT ERROR: LA CANTIDAD DE VALORES ES MAYOR DE LOS NECESARIOS ", ctx.getStart());
             
             return null;
         }
@@ -78,21 +78,21 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         if (!isSimpleInsert) {
             // Validar cantidad de columnas contra inserts
             if (insertValues.size() != insertColumnNames.size()) {
-                DBMS.throwMessage("Insert Error: Cantidad de columnas y valores no coinciden", ctx.getStart());
+                DBMS.throwMessage("INSERT ERROR: CANTIDAD DE COLUMNAS Y VALORES NO COINCIDEN ", ctx.getStart());
 
                 return null;
             }
             
             // Validar que la cantidad de columnas a insertar no sean mayores que la definición de la tabla
             if (insertColumnNames.size() > cantColumnasTabla) {
-                DBMS.throwMessage("Insert Error: Cantidad de columnas mayor de los necesarios", ctx.getStart());
+                DBMS.throwMessage("INSERT ERROR: CANTIDAD DE COLUMNAS MAYOR DE LOS NECESARIOS ", ctx.getStart());
             
                 return null;
             }
             
             // Validar que las columnas a ingresar no sean repetidas
             if (!verificarDobleLlamadaColumna(insertColumnNames)) {
-                DBMS.throwMessage("Insert Error: Columnas repetidas", ctx.getStart());
+                DBMS.throwMessage("INSERT ERROR: COLUMNAS REPETIDAS", ctx.getStart());
             
                 return null;  
             }
@@ -117,7 +117,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     
                     if (!verifyPossibleCast(insertValues.get(i), tipoColumna)) {
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + valor + " Es incorrecto, se requiere un " + tipoColumna,
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR : " + valor + " ES INCORRECTO, SE REQUIERE UN " + tipoColumna,
                                 ctx.getStart()
                         );
 
@@ -129,7 +129,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     String valor = insertValues.get(i).substring(indexOfSubs);
                     if (!verifyDate(valor)) {
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + valor + " Es incorrecto, se requiere un " + tipoColumna,
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR : " + valor + " ES INCORRECTO, SE REQUIERE UN  " + tipoColumna,
                                 ctx.getStart()
                         );
 
@@ -158,7 +158,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
             }
         
             if (cantValidColumnNames != insertColumnNames.size()) {
-                    DBMS.throwMessage("Insert Error: Es posible que una de las columnas a hidratar no exista", ctx.getStart());
+                    DBMS.throwMessage("INSERT ERROR: ES POSIBLE QUE UNA DE LAS COLUMNAS A HIDRATAR NO EXISTA ", ctx.getStart());
                     
                     return null;
             }
@@ -177,8 +177,8 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                         ArrayList datosInsertValue = getTypeAndValueFromInsertValue(insertValues.get(i));
 
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + datosInsertValue.get(0) +
-                                " Es incorrecto, se requiere un " + datosInsertValue.get(1),
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR : " + datosInsertValue.get(0) +
+                                " ES INCORRECTO, SE REQUIERE UN  " + datosInsertValue.get(1),
                                 ctx.getStart()
                         );
 
@@ -190,7 +190,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     String valor = insertValues.get(i).substring(indexOfSubs);
                     if (!verifyDate(valor)) {
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + valor + " Es incorrecto, se requiere un " + tipoColumna,
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR : " + valor + " ES INCORRECTO, SE REQUIERE UN " + tipoColumna,
                                 ctx.getStart()
                         );
 
@@ -218,7 +218,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     
                     if (!verifyPossibleCast(tipoInsertVal, tipoColumna)) {
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + valor + " Es incorrecto, se requiere un " + tipoColumna,
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR: " + valor + " ES INCORRECTO, SE REQUIERE UN " + tipoColumna,
                                 ctx.getStart()
                         );
 
@@ -230,7 +230,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     String valor = insertValues.get(i).substring(indexOfSubs);
                     if (!verifyDate(valor)) {
                         DBMS.throwMessage(
-                                "Insert Error: Tipo de dato del valor: " + valor + " Es incorrecto, se requiere un " + tipoColumna,
+                                "INSERT ERROR: TIPO DE DATO DEL VALOR: " + valor + " ES INCORRECTO, SE REQUIERE UN " + tipoColumna,
                                 ctx.getStart()
                         );
 
@@ -424,7 +424,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     boolean isOk_p = verifyPrimaryKeyInTable(insertData, tabla.getDataInTable(), cnt.getReferences(), tabla);
                     if (!isOk_p) {
                         DBMS.throwMessage(
-                                "Insert Error: Primary key violation; Ya existe tupla con esos datos",
+                                "INSERT ERROR: PRIMARY KEY VIOLATION; YA EXISTE TUPLA CON ESOS DATOS",
                                 ctx.getStart()
                         );
                         return null;
@@ -434,7 +434,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                     boolean isOk_P = verifyPrimaryKeyInTable(insertData, tabla.getDataInTable(), cnt.getReferences(), tabla);
                     if (!isOk_P) {
                         DBMS.throwMessage(
-                                "Insert Error: Primary key violation; Ya existe tupla con esos datos",
+                                "INSERT ERROR: PRIMARY KEY VIOLATION; YA EXISTE UNA TUPLA CON ESOS DATOS",
                                 ctx.getStart()
                         );
                         return null;
@@ -453,7 +453,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                         boolean isOk_f = verifyForeignKeyInTable(insertData, nombreColumnOwner_1, nombreColumnaRef_1, tabla, tablaRef_1);
                         if (!isOk_f) {
                             DBMS.throwMessage(
-                                    "Insert Error: Foreign key violation; No existe valor referenciado",
+                                    "INSERT ERROR: FOREIGN KEY VIOLATION; NO EXISTE EL VALOR AL QUE SE LE HACE REFERENCIA",
                                     ctx.getStart()
                             );
                             return null;
@@ -473,7 +473,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
                         boolean isOk_F = verifyForeignKeyInTable(insertData, nombreColumnOwner, nombreColumnaRef, tabla, tablaRef);
                         if (!isOk_F) {
                             DBMS.throwMessage(
-                                    "Insert Error: Foreign key violation; No existe valor referenciado",
+                                    "INSERT ERROR: FOREIGN KEY VIOLATION; NO EXISTE VALOR REFERENCIADO",
                                     ctx.getStart()
                             );
                             return null;
@@ -494,7 +494,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         json.objectToJSON(bdActual, "MasterTable"+bdActual, maestroTabla);
         
         DBMS.throwMessage(
-                "Insert Correcto: En tabla: " + nombreTabla,
+                "INSERT CORRECTO: EN TABLA: " + nombreTabla,
                 ctx.getStart()
         );
         
@@ -546,7 +546,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         boolean secondOp_isColumn = false;
         
         if (columnaCheck == null) {
-            System.out.println("No existe la columna: " + columnaCheck);
+            System.out.println("NO EXISTE LA COLUMNA: " + columnaCheck);
             return false;
         }
         
@@ -590,13 +590,13 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         ArrayList<T> datosColumna = getDataInColumnFromTable(reference, tablaRef);
         
         if (datosColumna == null) {
-            System.out.println("No se encontraron datos para FK validation");
+            System.out.println(" NO SE ENCONTRARON DATOS PARA FK VALIDATION ");
         }
         
         int indexOfColumn = getIndexOfColumn(referenceOwner, tablaOwner.getColumnas());
         
         if (indexOfColumn == -1) {
-            System.out.println("La vida no es justa, no encontró el índice");
+            System.out.println("La vida no es justa JA JA, no encontró el índice");
         }
         
         T dato_eval = dataInsert.get(indexOfColumn);
@@ -621,7 +621,7 @@ public class VisitorAndres<T> extends sqlBaseVisitor{
         int indexOfColumn = getIndexOfColumn(nombreColumna, table.getColumnas());
         
         if (indexOfColumn == -1) {
-            System.out.println("No se encontró índice de la columna");
+            System.out.println("Error, No se encontró índice de la columna");
             return null;
         }
         

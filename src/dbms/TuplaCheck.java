@@ -57,14 +57,9 @@ public class TuplaCheck {
         this.operadorLogico = operadorLogico;
     }
     
-    
-
     @Override
     public String toString() {
         return "TuplaCheck{" + "op1=" + op1 + ", op2=" + op2 + ", operador=" + operador + '}';
     }
     
-    
-    
-
 }
