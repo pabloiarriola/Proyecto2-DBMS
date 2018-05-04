@@ -13,7 +13,7 @@ Database management system (ANTLR4)
 >> El proyecto fue realizado específicamente en la Herramienta NetBeans IDE 8.2.0.
 
 >> Se utilizó una gramática de SQL que describiera el lenguaje que debiera de aceptar el proyecto. Se utilizó ANTLR
-para reconocer el lenguaje, leerlo, procesarlo, etc. Se utilizó la versión 4.4 complete, la cual puede conseguir
+para reconocer el lenguaje, leerlo, procesarlo, etc. Se utilizó la versión 4.5.1 complete, la cual puede conseguir
 en el siguiente enlace: http://www.antlr.org/download/index.html.
 
 >> Para manejar las tablas, se utilizaron JSON para almacenar la información de las mismas, así como también de las bases de datos.
