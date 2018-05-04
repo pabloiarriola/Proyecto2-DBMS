@@ -1,7 +1,7 @@
 # DBMS
 Database management system (ANTLR4)
 
-# Members 
+# Integrantes
 >> Pablo Arriola 
 
 >> Andres Oliva 
