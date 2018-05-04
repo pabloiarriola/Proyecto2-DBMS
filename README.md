@@ -10,7 +10,7 @@ Database management system (ANTLR4)
 
 # Aspectos importantes del proyecto y como usarlo 
 
->> El proyecto fue realizado específicamente en la Herramienta NetBeans IDE 8.0.2.
+>> El proyecto fue realizado específicamente en la Herramienta NetBeans IDE 8.2.0.
 
 >> Se utilizó una gramática de SQL que describiera el lenguaje que debiera de aceptar el proyecto. Se utilizó ANTLR
 para reconocer el lenguaje, leerlo, procesarlo, etc. Se utilizó la versión 4.4 complete, la cual puede conseguir
