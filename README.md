@@ -3,7 +3,9 @@ Database management system (ANTLR4)
 
 # Members 
 >> Pablo Arriola 
+
 >> Andres Oliva 
+
 >> María Mercedes Retolaza 
 
 # Aspectos importantes del proyecto y como usarlo 
