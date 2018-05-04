@@ -5,6 +5,8 @@
  */
 package dbms;
 
+// Se declaran imports 
+
 //import antlr4.programLexer;
 //import antlr4.programParser;
 import antlr.sqlLexer;
@@ -39,8 +41,11 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 /**
  *
+ * @author Pablo
+ * Editado por Mercedes
  * @author Andres
  */
+
 public class ANTGui extends javax.swing.JFrame {
     
     private File inputFile;
@@ -73,6 +78,7 @@ public class ANTGui extends javax.swing.JFrame {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) jTree1.getCellRenderer();
+        // Se obtienen imagenes 
         Icon icon1 = new ImageIcon("src/resources/db-git.png");
         Icon icon2 = new ImageIcon("src/resources/dbfile-git.png");
       
@@ -81,7 +87,9 @@ public class ANTGui extends javax.swing.JFrame {
         renderer.setLeafIcon(icon2);
 
         File[] files = new File("DB").listFiles();
-        //If this pathname does not denote a directory, then listFiles() returns null. 
+
+        //Si este nombre de ruta no denota un directorio, listFiles () devuelve null
+
         int count=0;
         for (File file : files) {
             if (file.isDirectory()){
@@ -189,7 +197,7 @@ public class ANTGui extends javax.swing.JFrame {
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane3.setViewportView(jTree1);
 
-        jLabel2.setText("F5 run query F6 run selected query");
+        jLabel2.setText("F5 RUN QUERY F6 RUN SELECTED QUERY");
 
         jMenu2.setText("Acciones");
         jMenuBar1.add(jMenu2);
@@ -245,6 +253,9 @@ public class ANTGui extends javax.swing.JFrame {
        
         
         //************************ Actions ************************
+
+        //Se especifican acciones que otorga el GUI 
+
         Action newFileButton = new AbstractAction("Nuevo",new ImageIcon("src/resources/new-git.png")) {
             public void actionPerformed(ActionEvent e) {
                nuevoArchivo();
@@ -365,11 +376,10 @@ public class ANTGui extends javax.swing.JFrame {
         
         this.jToolBar1.add((debugAction));
         
-        
-       
-        
     }
-    
+
+    // Opciones de --archivos-- 
+
     public void nuevoArchivo(){
         
     }
@@ -381,7 +391,9 @@ public class ANTGui extends javax.swing.JFrame {
     public void guardarArchivo(){
        crearArchivo(this.jTextArea2.getText(),inputFile);
     }
-    
+
+    // Opción para abrir nuevo archivo 
+
     public void abrirArchivo(){
                JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
@@ -403,10 +415,7 @@ public class ANTGui extends javax.swing.JFrame {
                compilar2(input);
             }catch(Exception e){}
             
-            //this.jTextArea2.setText(input);
-            
-            
-           
+            //this.jTextArea2.setText(input);       
         }
         else{
             System.out.println("Error al abrir el archivo");
@@ -418,9 +427,7 @@ public class ANTGui extends javax.swing.JFrame {
           try{
               
             jTextArea3.setText("");
-           
-         
-
+          
             CharStream cs =  new ANTLRInputStream(in);
 
            sqlLexer lexer = new sqlLexer(cs);
@@ -433,15 +440,10 @@ public class ANTGui extends javax.swing.JFrame {
             contexto = parser.sql2003Parser();
             ParseTree tree = contexto;
 
-            
-
-         
-
             // Specify our entry point
             
             ruleNames = parser.getRuleNames();
             
-
             int errorsCount = parser.getNumberOfSyntaxErrors();
             System.out.println(errorsCount);
             if(errorsCount == 0){
@@ -479,7 +481,9 @@ public class ANTGui extends javax.swing.JFrame {
             }
             else {
                 if (this.jTextArea2.getStringSelected().isEmpty()){
-                    DBMS.throwMessage("No hay nada seleccionado");
+
+                    DBMS.throwMessage("ERROR, NO HAY NADA SELECCIONADO");
+
                 }
                 else{
                     in = this.jTextArea2.getStringSelected();
@@ -489,7 +493,8 @@ public class ANTGui extends javax.swing.JFrame {
             
             CharStream cs =  new ANTLRInputStream(in);
 
-           sqlLexer lexer = new sqlLexer(cs);
+            sqlLexer lexer = new sqlLexer(cs);
+
             lexer.removeErrorListeners();
             lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
             CommonTokenStream tokens = new CommonTokenStream( lexer);
@@ -578,14 +583,12 @@ public class ANTGui extends javax.swing.JFrame {
     
      public void crearArchivo(String output,File archivo){
         try {
-            
-             
+
                
                 FileWriter fw = new FileWriter(archivo);
                 BufferedWriter bw = new BufferedWriter(fw);
                
                 bw.write(output);
-            
 
                 bw.close();
 
@@ -605,6 +608,7 @@ public class ANTGui extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -639,8 +643,6 @@ public class ANTGui extends javax.swing.JFrame {
         
     }
     
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
