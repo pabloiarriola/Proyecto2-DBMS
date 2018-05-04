@@ -1,6 +1,10 @@
 # DBMS
 Database management system (ANTLR4)
 
+# Aclaracion
+El querry where si funciona, el problema fue que se realizo con delete y delete es el 
+que funciona parcialmente ya que solo borra la casilla pero no la fila
+
 # Integrantes
 >> Pablo Arriola 
 
