@@ -43,7 +43,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
  *
  * @author Pablo
  * Editado por Mercedes
+ * @author Andres
  */
+
 public class ANTGui extends javax.swing.JFrame {
     
     private File inputFile;
@@ -85,7 +87,9 @@ public class ANTGui extends javax.swing.JFrame {
         renderer.setLeafIcon(icon2);
 
         File[] files = new File("DB").listFiles();
+
         //Si este nombre de ruta no denota un directorio, listFiles () devuelve null
+
         int count=0;
         for (File file : files) {
             if (file.isDirectory()){
@@ -249,7 +253,9 @@ public class ANTGui extends javax.swing.JFrame {
        
         
         //************************ Actions ************************
+
         //Se especifican acciones que otorga el GUI 
+
         Action newFileButton = new AbstractAction("Nuevo",new ImageIcon("src/resources/new-git.png")) {
             public void actionPerformed(ActionEvent e) {
                nuevoArchivo();
@@ -373,7 +379,7 @@ public class ANTGui extends javax.swing.JFrame {
     }
 
     // Opciones de --archivos-- 
-    
+
     public void nuevoArchivo(){
         
     }
@@ -385,7 +391,9 @@ public class ANTGui extends javax.swing.JFrame {
     public void guardarArchivo(){
        crearArchivo(this.jTextArea2.getText(),inputFile);
     }
+
     // Opción para abrir nuevo archivo 
+
     public void abrirArchivo(){
                JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
@@ -419,8 +427,7 @@ public class ANTGui extends javax.swing.JFrame {
           try{
               
             jTextArea3.setText("");
-           
-
+          
             CharStream cs =  new ANTLRInputStream(in);
 
            sqlLexer lexer = new sqlLexer(cs);
@@ -474,7 +481,9 @@ public class ANTGui extends javax.swing.JFrame {
             }
             else {
                 if (this.jTextArea2.getStringSelected().isEmpty()){
+
                     DBMS.throwMessage("ERROR, NO HAY NADA SELECCIONADO");
+
                 }
                 else{
                     in = this.jTextArea2.getStringSelected();
@@ -485,6 +494,7 @@ public class ANTGui extends javax.swing.JFrame {
             CharStream cs =  new ANTLRInputStream(in);
 
             sqlLexer lexer = new sqlLexer(cs);
+
             lexer.removeErrorListeners();
             lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
             CommonTokenStream tokens = new CommonTokenStream( lexer);
@@ -573,12 +583,13 @@ public class ANTGui extends javax.swing.JFrame {
     
      public void crearArchivo(String output,File archivo){
         try {
+
                
                 FileWriter fw = new FileWriter(archivo);
                 BufferedWriter bw = new BufferedWriter(fw);
                
                 bw.write(output);
-        
+
                 bw.close();
 
                 System.out.println("Se ha guardado el archivo exitosamente");
